@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    environment:
+      - INFLUXDB_ADMIN_USER=admin  # Set the admin username
+      - INFLUXDB_ADMIN_PASSWORD=password  # Set the admin password
+      - INFLUXDB_DB=mydatabase  # Set the default database name
+    volumes:
+      - influxdb_data:/var/lib/influxdb  # Persistent storage for InfluxDB data
+    ports:
+      - "8086:8086"  # InfluxDB HTTP API
+      - "8088:8088"  # Backup/restore service
+    command: influxd  # The default command to start the InfluxDB service
+    networks:
+      - influxdb-net
+
+volumes:
+  influxdb_data:  # Persistent storage for InfluxDB data
+
+networks:
+  influxdb-net:  # Custom network for InfluxDB
+    name: influxdb-net
+

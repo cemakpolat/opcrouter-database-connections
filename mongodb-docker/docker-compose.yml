@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  mongodb:
+    # *-----------------------------*
+      # To connect to mongoDB
+      #   docker exec --interactive --tty mongodb mongo localhost:27017
+      # *-----------------------------*
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      #- AUTH=yes
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      #     MONGO_INITDB_DATABASE: opc
+    command: ["mongod", "--bind_ip", "0.0.0.0"]  # Allow MongoDB to be accessed from outside Docker
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - "27018:27017"
+    networks:
+      - mongo
+
+volumes:
+  mongodb_data_container:
+networks:
+  mongo:
+    name: mongo-net
